@@ -96,7 +96,7 @@ app.get('/api/stats', wrap(async (_req, res) => {
   edge(res, 5)
   res.json({
     brand: config.brand, live: config.live, killed: isKilled(), launchesOpen: config.launchesOpen,
-    master: masterAddress(), coinMint: config.coinMint || null, xUrl: config.xUrl || null,
+    master: masterAddress(), coinMint: config.coinMint || null, coinSymbol: config.coinSymbol, xUrl: config.xUrl || null,
     coins: coins.length,
     burning: coins.filter(c => burnTotals().has(c.mint)).length,
     solBoughtBack: receipts.reduce((s, r) => s + (r.sol || 0), 0),

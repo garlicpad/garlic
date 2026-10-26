@@ -115,6 +115,18 @@ export function findClash(coins, cand, maxDistance) {
   return null
 }
 
+/**
+ * The platform's own coin: its ticker and name can never be launched on the board, in any folding.
+ * reserved = { tickers: [...], names: [...] } (raw; folded here). → { rule } or null.
+ */
+export function reservedClash(reserved, cand) {
+  const t = squeeze(foldTicker(cand.ticker))
+  const n = squeeze(foldName(cand.name))
+  if (t && (reserved.tickers || []).some(x => squeeze(foldTicker(x)) === t)) return { rule: 'ticker', reserved: true }
+  if (n && (reserved.names || []).some(x => squeeze(foldName(x)) === n)) return { rule: 'name', reserved: true }
+  return null
+}
+
 export const CLASH_TEXT = {
   ticker: s => `$${s} already has this ticker. One coin per ticker, forever.`,
   name: s => `$${s} already has this name.`,

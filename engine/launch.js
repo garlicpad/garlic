@@ -19,7 +19,7 @@ import {
   getMaster, coinKeyFor, submit, settled, tipIx, transferSol, balanceOf, isKilled, SYSTEM_RENT_FLOOR, sol, isPubkey,
 } from './solana.js'
 import { createIx, initAccumulatorIx } from './pump.js'
-import { validateCoin, findClash, foldTicker, foldName, xKey, CLASH_TEXT, HOLDING } from './vamp.js'
+import { validateCoin, findClash, reservedClash, foldTicker, foldName, xKey, CLASH_TEXT, HOLDING } from './vamp.js'
 import { fingerprint } from './images.js'
 import { checkImage, uploadMetadata, removeHosted } from './ipfs.js'
 import { tradingElsewhere } from './market.js'
@@ -59,8 +59,13 @@ export function gate(coins, wallet, now = Date.now()) {
   }
 }
 
+const RESERVED = () => ({ tickers: config.reservedTickers, names: config.reservedNames })
+const reservedText = rule => (rule === 'ticker' ? `$${config.coinSymbol} is garlic's own coin. Pick a ticker of your own.` : `that name belongs to garlic's own coin.`)
+
 /** The local anti-vamp check, as a refusal the site can show. */
 export function clashError(coins, cand) {
+  const r = reservedClash(RESERVED(), cand)
+  if (r) return err(409, reservedText(r.rule), { rule: r.rule })
   const c = findClash(coins, cand, config.imageDistance)
   if (!c) return null
   return err(409, CLASH_TEXT[c.rule](c.symbol), { rule: c.rule, mint: c.mint })
@@ -81,14 +86,14 @@ export async function checkCoin({ symbol, name, x, image }) {
     if (!foldTicker(symbol)) out.ticker = 'needs at least one letter or number'
     else {
       const c = findClash(coins, { ticker: symbol, name: '', x: null }, config.imageDistance)
-      out.ticker = c?.rule === 'ticker' ? CLASH_TEXT.ticker(c.symbol) : 'ok'
+      out.ticker = reservedClash(RESERVED(), { ticker: symbol, name: '' }) ? reservedText('ticker') : c?.rule === 'ticker' ? CLASH_TEXT.ticker(c.symbol) : 'ok'
       if (out.ticker === 'ok') {
         const ext = await tradingElsewhere(symbol, new Set(coins.map(c2 => c2.mint).filter(Boolean)))
         if (ext) out.ticker = elsewhereText(ext)
       }
     }
   }
-  if (name && foldName(name)) out.name = owned('name', { name })
+  if (name && foldName(name)) out.name = reservedClash(RESERVED(), { ticker: '', name }) ? reservedText('name') : owned('name', { name })
   if (cand.x) out.x = owned('x', { x: cand.x })
   else if (x) out.x = 'must be an x.com post, account or community'
   if (image) out.picture = owned('picture', { imgSha: cand.imgSha, imgHash: cand.imgHash })

@@ -286,6 +286,16 @@ a.row:hover { background: rgba(255, 255, 255, 0.022); }
 .fold span.eq { border: 0; padding-left: 0; padding-right: 0; color: var(--dim); }
 .fold span.k { color: var(--text); border-color: var(--line-2); }
 
+/* the platform coin */
+.coincard { display: grid; gap: 8px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+.coincard .ct { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.coincard .ct img { width: 22px; height: 22px; border-radius: 6px; }
+.coincard .ct b { font-weight: 500; }
+.coincard .ct span { color: var(--dim); font-size: 12.5px; margin-left: auto; }
+.coincard .ca { height: 32px; justify-content: space-between; font-size: 12px; padding: 0 12px; }
+.hero-ca { margin-top: 18px; gap: 12px; }
+.hero-ca b { font-family: var(--sans); font-weight: 500; color: var(--accent); font-size: 14px; }
+
 /* toast */
 .toast {
   position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 20;

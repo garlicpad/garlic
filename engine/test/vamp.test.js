@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { foldTicker, foldName, xKey, hamming, findClash, validateCoin, squeeze } from '../vamp.js'
+import { foldTicker, foldName, xKey, hamming, findClash, validateCoin, squeeze, reservedClash } from '../vamp.js'
 
 test('tickers fold case, spaces, $ and punctuation', () => {
   for (const t of ['PEPE', 'pepe', '$PEPE', 'P E P E', 'p.e.p.e', 'Pe-Pe', 'PEPE ']) assert.equal(foldTicker(t), 'PEPE', t)
@@ -132,4 +132,11 @@ test('repeated letters stay in the fold used against coins elsewhere ($MOON is n
 test('names drop AI and INU like the other filler', () => {
   assert.equal(foldName('Doge AI'), foldName('Doge'))
   assert.equal(foldName('Doge Inu'), foldName('Doge'))
+})
+
+test('the platform coin\'s ticker and name are reserved on the board', () => {
+  const reserved = { tickers: ['GARLIC', 'GARLICPAD'], names: ['garlic', 'garlicpad'] }
+  for (const t of ['GARLIC', 'garlic', 'G4RLIC', 'GARLIC AI', 'THE GARLIC', 'GARLLIC', 'GARLICPAD']) assert.equal(reservedClash(reserved, { ticker: t, name: 'x' })?.rule, 'ticker', t)
+  assert.equal(reservedClash(reserved, { ticker: 'CLOVE', name: 'Garlic Official' })?.rule, 'name')
+  assert.equal(reservedClash(reserved, { ticker: 'CLOVE', name: 'Clove' }), null)
 })

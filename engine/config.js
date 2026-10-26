@@ -25,6 +25,10 @@ export const config = {
   xUrl: env('X_URL', ''),
   // The platform's own coin (launched through the pad like every other coin)
   coinMint: env('COIN_MINT', ''),
+  coinSymbol: env('COIN_SYMBOL', 'GARLIC'),
+  // the platform coin's ticker and name, refused on the board in any folding
+  reservedTickers: env('RESERVED_TICKERS', 'GARLIC,GARLICPAD').split(',').map(s => s.trim()).filter(Boolean),
+  reservedNames: env('RESERVED_NAMES', 'garlic,garlicpad').split(',').map(s => s.trim()).filter(Boolean),
 
   // --- Solana ---
   // GARLIC_RPC_URL wins over SOLANA_RPC_URL, which some machines set globally for other projects

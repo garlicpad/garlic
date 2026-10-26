@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useRoute, Link, go, Icon, BRAND } from './lib.jsx'
+import { useRoute, Link, go, Icon, BRAND, usePoll, copy, short, pumpUrl } from './lib.jsx'
 import { useWallet } from './wallet.js'
 import Board from './pages/Board.jsx'
 import Launch from './pages/Launch.jsx'
@@ -13,6 +13,21 @@ const NAV = [
   { to: '/burns', label: 'Burns', icon: Icon.flame },
   { to: '/how', label: 'How it works', icon: Icon.book },
 ]
+
+function CoinCard() {
+  const stats = usePoll('/stats', 60_000).data
+  const [copied, setCopied] = useState(false)
+  if (!stats?.coinMint) return null
+  return (
+    <div className="coincard">
+      <div className="ct"><img src="/icon-192.png" alt="" /><b>${stats.coinSymbol || 'GARLIC'}</b><span>our coin</span></div>
+      <button className="ca" onClick={async () => { if (await copy(stats.coinMint)) { setCopied(true); setTimeout(() => setCopied(false), 1400) } }}>
+        {copied ? 'copied' : `CA ${short(stats.coinMint)}`}<Icon.copy />
+      </button>
+      <a className="btn ghost small" href={pumpUrl(stats.coinMint)} target="_blank" rel="noreferrer">Buy on pump.fun</a>
+    </div>
+  )
+}
 
 function WalletButton() {
   const w = useWallet()
@@ -47,6 +62,7 @@ export default function App() {
           {NAV.map(n => <Link key={n.to} to={n.to} className={on(n.to) ? 'on' : ''}><n.icon />{n.label}</Link>)}
         </nav>
         <div className="grow" />
+        <CoinCard />
         <Link to="/launch" className="btn primary block" style={{ height: 42, fontSize: 14 }}>Launch a coin</Link>
         <div className="foot">
           <a href="https://github.com/gachapad/garlic" target="_blank" rel="noreferrer">Source code on GitHub</a>

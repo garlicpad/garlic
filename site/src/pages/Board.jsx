@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { usePoll, useTick, Link, Pic, Icon, usd, solFmt, tokens, pct, ago } from '../lib.jsx'
+import { usePoll, useTick, Link, Pic, Icon, usd, solFmt, tokens, pct, ago, copy, short } from '../lib.jsx'
 
 const SORTS = [
   ['new', 'New'],
@@ -43,6 +43,16 @@ export function Row({ c }) {
   )
 }
 
+function HeroCA({ stats }) {
+  const [copied, setCopied] = useState(false)
+  if (!stats?.coinMint) return null
+  return (
+    <button className="ca hero-ca" onClick={async () => { if (await copy(stats.coinMint)) { setCopied(true); setTimeout(() => setCopied(false), 1400) } }}>
+      <b>${stats.coinSymbol || 'GARLIC'}</b>{copied ? 'copied' : short(stats.coinMint)}<Icon.copy />
+    </button>
+  )
+}
+
 export default function Board({ q }) {
   const [sort, setSort] = useState('new')
   const stats = usePoll('/stats', 10_000).data
@@ -62,6 +72,7 @@ export default function Board({ q }) {
             <Link to="/launch" className="btn primary">Launch a coin, free</Link>
             <Link to="/how" className="btn ghost">How it works</Link>
           </div>
+          <HeroCA stats={stats} />
         </div>
         <div className="hero-art"><img src="/mark.png" alt="" /></div>
       </section>
