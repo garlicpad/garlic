@@ -50,7 +50,7 @@ export default function How() {
           <div className="i">05</div>
           <div>
             <h3>What to trust, plainly.</h3>
-            <p>The coin keys are derived from the master wallet’s key, which we hold: the buyback runs on our engine, not in a contract. Everything it does is public, and each coin’s creator address is on its page so anyone can check where its fees went.</p>
+            <p>The coin keys are derived from the master wallet’s key, which we hold: the buyback runs on our engine, not in a contract. Everything it does is public, and each coin’s creator address is on its page so anyone can check where its fees went. The code is open source: <a href="https://github.com/gachapad/garlic" target="_blank" rel="noreferrer" style={{ color: 'var(--text)', borderBottom: '1px solid var(--line-2)' }}>github.com/gachapad/garlic</a>.</p>
             <p>pump.fun sets the fees and the curve. Coins are made by their launchers, not by us. Nothing here is financial advice, and we are not affiliated with pump.fun.</p>
           </div>
         </div>

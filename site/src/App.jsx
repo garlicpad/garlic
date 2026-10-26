@@ -49,6 +49,7 @@ export default function App() {
         <div className="grow" />
         <Link to="/launch" className="btn primary block" style={{ height: 42, fontSize: 14 }}>Launch a coin</Link>
         <div className="foot">
+          <a href="https://github.com/gachapad/garlic" target="_blank" rel="noreferrer">Source code on GitHub</a>
           <span>Coins trade on pump.fun.</span>
           <span>Not affiliated with pump.fun.</span>
         </div>
