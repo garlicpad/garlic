@@ -1,0 +1,25 @@
+{
+  "name": "garlic-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fair launches on pump.fun: one master wallet, no dev buy, no vamps, every creator fee buys the coin back and burns it.",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --import ./test/setup.mjs --test test/vamp.test.js test/burn.test.js test/launch.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.9.7",
+    "@pump-fun/pump-sdk": "4.2.0",
+    "@pump-fun/pump-swap-sdk": "1.20.0",
+    "@solana/spl-token": "^0.4.13",
+    "@solana/web3.js": "^1.98.4",
+    "bn.js": "^5.2.1",
+    "bs58": "^6.0.0",
+    "express": "^4.21.2",
+    "sharp": "^0.34.4"
+  }
+}

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vercel/
+# secrets and live state never leave the server
+.env
+.env.*
+!.env.example
+data/
+data-*/
+*.pem
+*-wallet.json
+KILL
